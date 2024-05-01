@@ -37,7 +37,6 @@ fn handle_start_game(game_mut: &Mutex<Game>, request: &Request) -> rouille::Resp
         Ok(_) => rouille::Response::text("Ok").with_status_code(200),
         Err(err) => rouille::Response::text(err.to_string()).with_status_code(500),
     };
-    game_mut.clear_poison();
     return res;
 }
 
@@ -54,7 +53,6 @@ fn handle_save_transaction(game_mut: &Mutex<Game>, request: &Request) -> rouille
         Err(err) => rouille::Response::text(err.to_string()).with_status_code(500),
     };
 
-    game_mut.clear_poison();
     return res;
 }
 
@@ -65,7 +63,6 @@ fn handle_get_transaction(game_mut: &Mutex<Game>, _request: &Request) -> rouille
         .get_all_transactions()
         .expect("Couldn't get transactions");
 
-    game_mut.clear_poison();
     rouille::Response::json(&transactions)
         .with_additional_header("Access-Control-Allow-Origin", "*")
 }
@@ -75,7 +72,6 @@ fn handle_get_profit(game_mut: &Mutex<Game>, _request: &Request) -> rouille::Res
 
     let profit = game.get_profit().expect("Couldn't get profits");
 
-    game_mut.clear_poison();
     rouille::Response::json(&profit).with_additional_header("Access-Control-Allow-Origin", "*")
 }
 
@@ -84,6 +80,5 @@ fn handle_get_profit_by_day(game_mut: &Mutex<Game>, _request: &Request) -> rouil
 
     let profit = game.get_profit_by_day().expect("Couldn't get profits");
 
-    game_mut.clear_poison();
     rouille::Response::json(&profit).with_additional_header("Access-Control-Allow-Origin", "*")
 }
